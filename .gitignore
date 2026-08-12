@@ -1,0 +1,14 @@
+# local asset pipeline & dev tooling — not part of the deployed page
+scripts/
+.claude/
+.npmrc
+*.log
+
+# viewer source (the deployed page uses the bundled static/js/scene-viewer.bundle.js)
+modules/SceneViewer/scene-viewer.js
+
+# base64 model wrappers are only needed when opening index.html via file://
+assets/models/*.glb.js
+
+# the page loads the environment via static/env/studio.hdr.js; the raw .hdr is source-only
+static/env/studio.hdr

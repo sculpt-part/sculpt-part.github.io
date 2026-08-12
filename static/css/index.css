@@ -1,0 +1,291 @@
+body {
+  font-family: 'Noto Sans', sans-serif;
+}
+
+.footer .icon-link {
+  font-size: 25px;
+  color: #000;
+}
+
+.link-block a {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.link-block .icon svg {
+  width: 1em;
+  height: 1em;
+  fill: currentColor;
+}
+
+.method-name {
+  font-variant: small-caps;
+  font-weight: 700;
+}
+
+/* ---------- opening video hero (full-viewport background video + overlaid title) ---------- */
+.video-hero {
+  position: relative;
+  min-height: 100vh; /* grows with content on short viewports instead of clipping */
+  background: #111;
+  overflow: hidden;
+}
+
+.video-hero-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.video-hero-scrim {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(5, 8, 12, 0.55) 0%, rgba(5, 8, 12, 0.35) 45%, rgba(5, 8, 12, 0.72) 100%);
+}
+
+.video-hero-content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 2.5rem 1rem 3.5rem;
+  color: #fff;
+}
+
+/* short viewports: shrink the logo so everything still fits */
+@media (max-height: 700px) {
+  .hero-logo { height: 72px; }
+}
+
+/* bulma gives .container flex-grow: 1 inside flex parents, which stretches it
+   to full height and pins the title to the top — kill it so centering works.
+   Also widen it beyond Bulma's 960px so the enlarged title fits on two lines. */
+.video-hero-content > .container {
+  flex-grow: 0;
+  max-width: 1200px;
+  width: 100%;
+}
+
+/* logo sits to the left of the title */
+.hero-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.8rem;
+  margin-bottom: 1.6rem;
+}
+
+.hero-logo {
+  display: block;
+  height: clamp(110px, 20vh, 180px);
+  width: auto;
+  flex-shrink: 0;
+  filter: drop-shadow(0 6px 22px rgba(0, 0, 0, 0.55));
+}
+
+.hero-title-row .publication-title {
+  margin-bottom: 0;
+}
+
+@media (max-width: 768px) {
+  /* narrow screens: stack the logo back above the title */
+  .hero-title-row {
+    flex-direction: column;
+    gap: 1rem;
+  }
+}
+
+.video-hero .publication-title {
+  color: #fff;
+  text-shadow: 0 2px 24px rgba(0, 0, 0, 0.45);
+  font-size: clamp(2.4rem, 4.7vw, 4.1rem);
+  line-height: 1.1;
+  margin-bottom: 1.6rem;
+}
+
+.video-hero .publication-authors,
+.video-hero .publication-venue {
+  color: rgba(255, 255, 255, 0.92);
+}
+
+/* enlarged author / affiliation rows */
+.video-hero .publication-authors.is-size-5 {
+  font-size: clamp(1.1rem, 1.8vw, 1.5rem) !important;
+  line-height: 1.6;
+}
+
+.video-hero .author-notes {
+  font-size: clamp(0.85rem, 1.1vw, 1rem) !important;
+  margin-top: 0.6rem;
+}
+
+/* TLDR line in the hero */
+.hero-tldr {
+  max-width: 800px;
+  margin: 1.6rem auto 0;
+  color: rgba(255, 255, 255, 0.88);
+  font-size: clamp(1.05rem, 1.7vw, 1.35rem);
+  line-height: 1.55;
+  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.4);
+}
+
+.video-hero .publication-authors a {
+  color: #cfe3ff !important;
+}
+
+.video-hero .author-notes {
+  color: rgba(255, 255, 255, 0.68);
+}
+
+/* translucent glassy buttons over the video */
+.video-hero .publication-links .button.is-dark {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.32);
+  backdrop-filter: blur(10px);
+  transition: background-color 0.16s ease, border-color 0.16s ease, transform 0.16s ease;
+}
+
+.video-hero .publication-links .button.is-dark:hover {
+  background: rgba(255, 255, 255, 0.26);
+  border-color: rgba(255, 255, 255, 0.62);
+  transform: translateY(-1px);
+}
+
+/* scroll-down hint */
+.video-hero-scroll-hint {
+  position: absolute;
+  bottom: 22px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1;
+  color: rgba(255, 255, 255, 0.75);
+  animation: hero-bob 1.8s ease-in-out infinite;
+}
+
+.video-hero-scroll-hint svg {
+  width: 26px;
+  height: 26px;
+  fill: currentColor;
+}
+
+@keyframes hero-bob {
+  0%, 100% { transform: translate(-50%, 0); }
+  50% { transform: translate(-50%, 8px); }
+}
+
+.publication-title {
+  font-family: 'Google Sans', sans-serif;
+}
+
+.publication-authors {
+  font-family: 'Google Sans', sans-serif;
+}
+
+.author-notes {
+  color: #777;
+  margin-top: 0.35rem;
+}
+
+.publication-venue {
+  color: #555;
+  font-style: italic;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.publication-authors a {
+  color: hsl(204, 86%, 53%) !important;
+}
+
+.publication-authors a:hover {
+  text-decoration: underline;
+}
+
+.author-block {
+  display: inline-block;
+}
+
+.teaser-video-section .hero-body {
+  padding-top: 0;
+}
+
+#teaser-video {
+  width: 100%;
+  border-radius: 10px;
+  background: #000;
+  display: block;
+  margin-bottom: 1.25rem;
+}
+
+.paper-figure {
+  margin: 2rem 0;
+}
+
+.paper-figure img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.paper-figure figcaption {
+  margin-top: 0.75rem;
+  color: #555;
+}
+
+/* ---------- paged video galleries (Swiper) ---------- */
+/* arrows sit in the shell's side padding, outside the swiper's clipped area */
+.gallery-shell {
+  position: relative;
+  padding: 0 52px;
+  --swiper-navigation-size: 28px;
+  --swiper-navigation-color: #3273dc;
+  --swiper-pagination-color: #3273dc;
+}
+
+.gallery-shell .swiper-button-prev { left: 8px; }
+.gallery-shell .swiper-button-next { right: 8px; }
+
+.gallery-swiper {
+  padding-bottom: 36px; /* room for pagination dots */
+}
+
+.gallery-swiper video {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 8px;
+  background: #fff;
+  border: 1px solid #eee;
+  display: block;
+}
+
+/* More Results: 2x2 grid per page */
+.gallery-swiper .video-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+/* Complex Cases: one large video per page */
+.gallery-swiper-complex .swiper-slide video {
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.complex-cases-title {
+  margin-top: 2.5rem;
+}
+
+@media (max-width: 768px) {
+  .gallery-shell { padding: 0 36px; }
+  .gallery-swiper { padding-bottom: 32px; }
+}
+
+pre {
+  border-radius: 8px;
+}

@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="SCULPT: Subtractive Composition for 3D Part Generation. Part-aware 3D generation via iterative joint split prediction in a structured 3D latent space.">
+  <meta name="keywords" content="3D Generation, Part Generation, Subtractive Composition, Diffusion, SIGGRAPH Asia 2026">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SCULPT: Subtractive Composition for 3D Part Generation</title>
+  <link rel="icon" type="image/png" href="static/images/favicon.png">
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet" media="print" onload="this.media='all'">
+  <link rel="stylesheet" href="static/vendor/bulma.min.css">
+  <link rel="stylesheet" href="static/vendor/swiper/swiper-bundle.min.css">
+  <link rel="stylesheet" href="static/css/index.css">
+  <link rel="stylesheet" href="modules/SceneViewer/scene-viewer.css">
+</head>
+<body>
+
+<section class="video-hero">
+  <video class="video-hero-bg" autoplay muted loop playsinline>
+    <source src="static/videos/hero_banner.mp4" type="video/mp4">
+  </video>
+  <div class="video-hero-scrim"></div>
+  <div class="video-hero-content">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <div class="hero-title-row">
+            <img class="hero-logo" src="static/images/logo.png" alt="SCULPT logo: a brick being extracted from an assembled block">
+            <h1 class="title is-1 publication-title">SCULPT: Subtractive Composition<br>for 3D Part Generation</h1>
+          </div>
+          <div class="is-size-5 publication-authors">
+            <span class="author-block"><a href="#">Sikuang Li</a><sup>1,*</sup>,</span>
+            <span class="author-block"><a href="#">Chen Yang</a><sup>2,*</sup>,</span>
+            <span class="author-block"><a href="#">Jiemin Fang</a><sup>2,✉</sup>,</span>
+            <span class="author-block"><a href="#">Jiazhong Cen</a><sup>1</sup>,</span><br>
+            <span class="author-block"><a href="#">Yuhe Wei</a><sup>1</sup>,</span>
+            <span class="author-block"><a href="#">Jichen Pang</a><sup>1</sup>,</span>
+            <span class="author-block"><a href="#">Wei Shen</a><sup>1,✉</sup>,</span>
+            <span class="author-block"><a href="#">Qi Tian</a><sup>2,✉</sup></span>
+          </div>
+          <div class="is-size-5 publication-authors">
+            <span class="author-block"><sup>1</sup>Shanghai Jiao Tong University,</span>
+            <span class="author-block"><sup>2</sup>Huawei</span>
+          </div>
+          <div class="is-size-6 publication-authors author-notes">
+            <span class="author-block"><sup>*</sup>Equal contribution.</span>
+            <span class="author-block"><sup>✉</sup>Corresponding authors.</span><br>
+            <span class="author-block">This work is done during an internship at Huawei.</span>
+          </div>
+
+          <p class="hero-tldr">
+            <span class="method-name">SCULPT</span> generates complete 3D objects and decomposes them into<br>
+            semantically meaningful, textured parts &mdash; part by part, <br>inside the generator's own latent space.
+          </p>
+
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <span class="link-block">
+                <a href="#" class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 2.5A1.5 1.5 0 0 1 3.5 1h6.086a1.5 1.5 0 0 1 1.06.44l2.915 2.914a1.5 1.5 0 0 1 .439 1.06V13.5A1.5 1.5 0 0 1 12.5 15h-9A1.5 1.5 0 0 1 2 13.5v-11ZM9.5 2.25V5a.75.75 0 0 0 .75.75h2.75L9.5 2.25ZM5 8.25a.75.75 0 0 0 0 1.5h6a.75.75 0 0 0 0-1.5H5Zm0 3a.75.75 0 0 0 0 1.5h6a.75.75 0 0 0 0-1.5H5Z"/></svg></span>
+                  <span>arXiv</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="#" class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3.75 1.5a.25.25 0 0 0-.25.25v12.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25V6h-2.75A1.75 1.75 0 0 1 8 4.25V1.5H3.75Zm5.75.56v2.19c0 .138.112.25.25.25h2.19L9.5 2.06ZM2 1.75C2 .784 2.784 0 3.75 0h5.086c.464 0 .909.184 1.237.513l3.414 3.414c.329.328.513.773.513 1.237v8.586A1.75 1.75 0 0 1 12.25 15.5h-8.5A1.75 1.75 0 0 1 2 13.75V1.75Z"/></svg></span>
+                  <span>Paper</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="#" class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg></span>
+                  <span>Code</span>
+                </a>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a class="video-hero-scroll-hint" href="#demo" aria-label="Scroll down">
+    <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 12.5a.75.75 0 0 1-.53-.22l-5.5-5.5a.75.75 0 1 1 1.06-1.06L8 10.69l4.97-4.97a.75.75 0 1 1 1.06 1.06l-5.5 5.5a.75.75 0 0 1-.53.22Z"/></svg>
+  </a>
+</section>
+
+<section class="section teaser-video-section" id="demo">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-full">
+        <h2 class="title is-3">Demo</h2>
+      </div>
+    </div>
+    <video id="teaser-video" autoplay muted loop playsinline controls poster="static/images/posters/sculpt_demo.jpg">
+      <source src="static/videos/sculpt_demo.mp4" type="video/mp4">
+    </video>
+  </div>
+</section>
+
+<section class="section" id="interactive-results">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-full">
+        <h2 class="title is-3">Interactive Results</h2>
+        <p class="content">
+          Drag to orbit, scroll to zoom, and use the <b>Explode</b> slider to pull the generated parts apart.<br>
+          Every part below was generated by SCULPT &mdash; closed, textured, and pre-aligned in the object frame.
+          <br><span class="is-size-7 has-text-grey">Models are compressed for the web (5&ndash;20&nbsp;MB each) and load on demand.</span>
+        </p>
+      </div>
+    </div>
+
+    <div class="scene-viewer">
+      <div id="viewer-stage">
+        <div id="loading-overlay">
+          <div class="loading-spinner"></div>
+          <div id="loading-progress">Loading&hellip;</div>
+        </div>
+        <div id="viewer-container"></div>
+        <div id="viewer-controls">
+          <label for="explode-slider"><b>Explode</b></label>
+          <input type="range" id="explode-slider" min="0" max="1" step="0.01" value="0">
+          <span id="model-info" class="is-size-7 has-text-grey"></span>
+        </div>
+      </div>
+      <div class="swiper" id="model-carousel">
+        <div class="swiper-wrapper"></div>
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-button-next"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="more-results">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-full">
+        <h2 class="title is-3">More Results</h2>
+        <p class="content">
+          Exploded views of more generated objects. Each clip shows the complete object
+          bursting into its generated parts.
+        </p>
+      </div>
+    </div>
+    <div class="gallery-shell">
+      <div class="swiper gallery-swiper" id="video-gallery">
+        <div class="swiper-wrapper"></div>
+        <div class="swiper-pagination"></div>
+      </div>
+      <div class="swiper-button-prev"></div>
+      <div class="swiper-button-next"></div>
+    </div>
+
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-full">
+        <h3 class="title is-4 complex-cases-title">Complex Cases</h3>
+        <p class="content">
+          SCULPT scales to intricate assemblies with up to hundreds of parts &mdash;
+          the part count adapts to each object.
+        </p>
+      </div>
+    </div>
+    <div class="gallery-shell">
+      <div class="swiper gallery-swiper gallery-swiper-complex" id="video-gallery-complex">
+        <div class="swiper-wrapper"></div>
+        <div class="swiper-pagination"></div>
+      </div>
+      <div class="swiper-button-prev"></div>
+      <div class="swiper-button-next"></div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="method">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-full">
+        <h2 class="title is-3">Method</h2>
+      </div>
+    </div>
+    <div class="content has-text-justified">
+      <p>
+        Starting from a complete object generated by a pretrained structured-latent backbone, SCULPT applies a
+        <b>joint split predictor</b> that couples an image-conditioned denoising branch with a ControlNet-style
+        branch injecting the current 3D state. At every step it generates <i>one extracted part together with the
+        updated remainder</i> in a single coupled denoising process, so the two outputs share an interface shell on
+        the native sparse support &mdash; adjacent parts stay aligned without welding, snapping, or rescaling.
+      </p>
+    </div>
+    <figure class="paper-figure">
+      <img src="static/images/method.webp" alt="SCULPT pipeline: joint split predictor with decomposition flow transformer blocks.">
+      <figcaption class="content is-small has-text-centered">
+        The joint split predictor performs coupled denoising conditioned on the input image and the current
+        remainder, emitting an extracted part <i>&#7825;<sub>i</sub></i> and the updated remainder <i>z<sub>i</sub></i>
+        at every iteration, until the residual support is empty.
+      </figcaption>
+    </figure>
+
+    <figure class="paper-figure">
+      <img src="static/images/sequence.webp" alt="Subtractive composition sequence: parts are extracted iteratively until the remainder is empty.">
+      <figcaption class="content is-small has-text-centered">
+        <b>Subtractive composition.</b> Parts (green) are extracted from the remaining object (red) one at a time;
+        the process terminates when the residual sparse support becomes empty, so the part count adapts to each object.
+      </figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="section" id="comparisons">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-full">
+        <h2 class="title is-3">Comparisons</h2>
+      </div>
+    </div>
+    <div class="content has-text-justified">
+      <p>
+        Compared with segmentation-based and additive part-generation baselines
+        (Part123, OmniPart, PartField, SAM3D, HoloPart pipelines), SCULPT preserves global shape while producing
+        coherent part boundaries and appearance, improving part-level Chamfer distance by <b>7.0%</b> over the
+        strongest baseline on the PartObjaverse benchmark.
+      </p>
+    </div>
+    <figure class="paper-figure">
+      <img src="static/images/qualitative.webp" alt="Qualitative comparison against part-structured generation baselines.">
+      <figcaption class="content is-small has-text-centered">
+        Qualitative comparison. Insets highlight part decomposition quality at shared boundaries.
+      </figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="section" id="BibTeX">
+  <div class="container is-max-desktop content">
+    <h2 class="title">BibTeX</h2>
+    <pre><code></code></pre>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content has-text-centered is-size-7">
+          <p>
+            Template adapted from <a href="https://github.com/nerfies/nerfies.github.io">Nerfies</a>;
+            interactive viewer inspired by <a href="https://vast-ai-research.github.io/HoloPart/">HoloPart</a>;
+            hero design inspired by <a href="https://instruct-particulate.github.io/">Instruct-Particulate</a>.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="static/vendor/swiper/swiper-bundle.min.js"></script>
+<script src="static/js/gallery.js"></script>
+<script src="static/js/scene-viewer.bundle.js"></script>
+<script>
+  new SceneViewerModule.SceneViewer({
+    models: [
+      { id: '290af2dd390c95db88a35b8062fdd2ac1a9c28edc6533bc6a26ab2c83c523c61', name: 'Gladiator Helmet', parts: 7 },
+      { id: 'AA1D1E77-99FA-4CF8-D339-2A2D27C70678', name: 'Espresso Machine', parts: 16 },
+      { id: 'ab3bb3e183991253ae66c06d44dc6105f3c113a1a1f819ab57a93c6f60b0d32b', name: 'Hourglass', parts: 6 },
+      { id: '6499bf2bcc024d419bd23f4d2eb332ce', name: 'Wooden Cannon', parts: 16 },
+      { id: '7c8bd48528554b3da47f2510287d78b4', name: 'Peashooter', parts: 3 },
+      { id: '0c3ca2b32545416f8f1e6f0e87def1a6', name: 'Fruit Bowl', parts: 3 },
+      { id: '245af7dde0cd4add9f7e11db3bbbccba', name: 'Submarine', parts: 10 },
+      { id: '53d9d21ff95f42428225f906cd9a0a5a', name: 'Sonic', parts: 4 }
+    ],
+    modelDir: 'assets/models',
+    thumbDir: 'static/images/thumbs'
+  });
+</script>
+<noscript>This page requires JavaScript for the interactive 3D viewer and video galleries.</noscript>
+</body>
+</html>
